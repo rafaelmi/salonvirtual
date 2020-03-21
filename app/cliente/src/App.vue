@@ -4,17 +4,25 @@
       app
       color="primary"
       dark
+      class="elevation-1"
     >
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
+        <v-list-item-avatar>
+          <!--<v-img
+            class="shrink mr-2"
+            contain
+            :src="require('@/assets/logo_capensa.jpg')"
+            transition="scale-transition"
+            width="40"
+          />-->
+          <v-img
+            contain
+            :src="require('@/assets/logo_capensa.jpg')"
+            transition="scale-transition"
+            width="40"
+          />
+        </v-list-item-avatar>
+        <!--
         <v-img
           alt="Vuetify Name"
           class="shrink mt-1 hidden-sm-and-down"
@@ -22,35 +30,33 @@
           min-width="100"
           src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
           width="100"
-        />
+        />-->
+        <span class="headline">Capensa Cursos</span>
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn
+      <!--<v-btn
         href="https://github.com/vuetifyjs/vuetify/releases/latest"
         target="_blank"
         text
       >
         <span class="mr-2">Latest Release</span>
         <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      </v-btn>-->
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <router-view/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-
 export default {
   name: 'App',
 
   components: {
-    HelloWorld
   },
 
   data: () => ({

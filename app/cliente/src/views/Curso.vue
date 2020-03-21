@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-toolbar color="primary" class="title" dark>
-      <span>Mis Cursos</span>
+      <span>{{title}}</span>
     </v-toolbar>
     <v-card flat height="200px">
       <v-list three-line>
       <template v-for="item in items">
         <v-list-item
           :key="item.nombre"
-          @click="$router.push('/cursos/'+item._id)"
+          @click="open(item)"
         >
           <v-list-item-avatar>
             <v-img :src="require('@/assets/' + item.avatar)"></v-img>
@@ -28,7 +28,7 @@
 <script>
 import Api from '@/mixins/api'
 
-const API_URL = '/user'
+const API_URL = '/cursos'
 
 export default {
   components: {
@@ -39,6 +39,7 @@ export default {
   ],
 
   data: () => ({
+    title: '',
     barColor: 'primary',
     items: []
   }),
@@ -46,19 +47,22 @@ export default {
   created () {
     this.apiCommand({
       url: API_URL,
-      command: 'info',
-      args: {}
+      command: 'get',
+      args: { _id: this.$route.params.id }
     })
       .then((result) => {
         console.log(result)
         if (result.result === 200) {
-          this.items = result.data.cursos
+          this.items = result.data.contenido
+          this.title = result.data.nombre
         } else {
         }
       })
   },
 
   methods: {
+    open () {
+    }
   }
 }
 </script>
