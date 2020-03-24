@@ -10,13 +10,13 @@
           :key="item.nombre"
           @click="open(item)"
         >
-          <v-list-item-avatar>
+          <!--<v-list-item-avatar>
             <v-img :src="require('@/assets/' + item.avatar)"></v-img>
-          </v-list-item-avatar>
+          </v-list-item-avatar>-->
 
           <v-list-item-content>
             <v-list-item-title v-html="item.nombre"></v-list-item-title>
-            <v-list-item-subtitle v-html="item.descripcion"></v-list-item-subtitle>
+            <!--<v-list-item-subtitle v-html="item.descripcion"></v-list-item-subtitle>-->
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -51,17 +51,19 @@ export default {
       args: { _id: this.$route.params.id }
     })
       .then((result) => {
-        console.log(result)
         if (result.result === 200) {
           this.items = result.data.contenido
           this.title = result.data.nombre
+          console.log(this.items)
+          console.log(this.title)
         } else {
         }
       })
   },
 
   methods: {
-    open () {
+    open (item) {
+      this.$router.push('/contenido/' + item.id)
     }
   }
 }

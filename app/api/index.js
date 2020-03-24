@@ -45,11 +45,8 @@ app.post('/cursos', (req, res) => {
   handle(req, res, cursos)
 });
 
-app.get('/contenido', (req, res) => {
-  req.body.args.session = req.session;
-  module[req.body.command](req.body.args, req.session).then((response) => {
-    res.json(response);
-  });
+app.get('/contenido/:id', (req, res) => {
+  contenido['contenido'](req, res);
 });
 
 const port = process.env.PORT || 4000;

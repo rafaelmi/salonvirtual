@@ -4,6 +4,8 @@ import Init from '../views/Init.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Curso from '../views/Curso.vue'
+import Contenido from '../views/Contenido.vue'
+import Chat from '../views/Chat.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,16 @@ const routes = [
     path: '/cursos/:id',
     name: 'Cursos',
     component: Curso
+  },
+  {
+    path: '/contenido/:id',
+    name: 'Contenido',
+    component: Contenido
+  },
+  {
+    path: '/chat/:id',
+    name: 'Chat',
+    component: Chat
   },
   {
     path: '/about',

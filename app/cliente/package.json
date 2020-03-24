@@ -1,5 +1,5 @@
 {
-  "name": "cliente",
+  "name": "Capensa",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,6 +11,7 @@
     "@mdi/font": "^3.6.95",
     "roboto-fontface": "*",
     "vue": "^2.6.11",
+    "vue-beautiful-chat": "^2.3.1",
     "vue-router": "^3.1.5",
     "vuetify": "^2.2.11",
     "vuex": "^3.1.2"
