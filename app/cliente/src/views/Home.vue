@@ -50,7 +50,6 @@ export default {
       args: {}
     })
       .then((result) => {
-        console.log(result)
         if (result.result === 200) {
           this.items = result.data.cursos
         } else {

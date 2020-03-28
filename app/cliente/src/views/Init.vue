@@ -49,7 +49,8 @@
                 <v-img
                   height="400"
                   width="580"
-                  :src="require('@/assets/presentacion/' + slide)"
+                  :src="require('@/assets/img/' + slide.src)"
+                  :contain="slide.contain"
                 >
                 </v-img>
               </v-row>
@@ -71,7 +72,7 @@
              gracias por compartir la sabiduría y por la oportunidad
              de hacer amigos fantásticos"
            </div>
-         <span class="font-regular">Lic. Laura Avila</span>
+         <span class="font-regular">Dra. Laura Avila</span>
        </div>
       </v-card-text>
     </v-card>
@@ -80,11 +81,12 @@
       max-width="900"
       color="green lighten-5"
     >
-      <v-card-text class="text-center">
-        <video controls class="black" width="100%" autoplay> <!-- width="320" height="240" -->
-          <source :src="require('@/assets/presentacion/5e7a7baa5766d124e3396578.mp4')" type="video/mp4"/>
+      <!--<v-card-text class="text-center">
+        <video controls class="black" width="100%" autoplay>
+          <source :src="require('@/assets/video/5e7a7baa5766d124e3396578.mp4')" type="video/mp4"/>
         </video>
-      </v-card-text>
+      </v-card-text>-->
+      <!--
       <v-card-actions>
         <v-col cols="5">
           <v-btn
@@ -94,7 +96,7 @@
             large
             rounded
             class="headline font-weight-bold"
-            @click="$router.push('/login')"
+            @click="$router.push('/registro')"
           >
             REGISTRARSE
           </v-btn>
@@ -109,12 +111,13 @@
             rounded
             class="headline font-weight-bold"
           >
-            <!--@click="$router.push('/login')"-->
             INGRESAR
           </v-btn>
         </v-col>
       </v-card-actions>
+    -->
     </v-card>
+    <cmpResumen/>
   </div>
 </template>
 
@@ -122,14 +125,15 @@
 export default {
   props: [],
   components: {
+    cmpResumen () { return import('@/views/Resumen.vue') }
   },
   data: () => ({
     slides: [
-      '5e7a72955766d124e3396574.jpeg',
-      '5e7a73055766d124e3396576.jpeg',
-      '5e7a72665766d124e3396573.jpeg',
-      '5e7a72d65766d124e3396575.jpeg',
-      '5e7a73145766d124e3396577.jpeg'
+      { src: '5e7a72955766d124e3396574.jpeg' },
+      { src: '5e7a73055766d124e3396576.jpeg' },
+      { src: '5e7a72665766d124e3396573.jpeg' },
+      { src: '5e7a72d65766d124e3396575.jpeg' },
+      { src: '5e7a73145766d124e3396577.jpeg', contain: true }
     ]
   }),
   methods: {
