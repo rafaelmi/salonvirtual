@@ -1,8 +1,8 @@
 export default {
   methods: {
     toMilSeparator (val) {
-      let res = val
-      if (!Number.isNaN(val) && val) {
+      let res = NaN
+      if (!/\D/.test(val) && val) {
         res = (Math.round(val) + '.X')
           .replace(/\d(?=(\d{3})+\.)/g, '$&.').replace('.X', '')
       }
