@@ -17,7 +17,7 @@
           />-->
           <v-img
             contain
-            :src="require('@/assets/logo_capensa.jpg')"
+            :src="require('@/assets/logo_capensa.jpeg')"
             transition="scale-transition"
             width="40"
           />
@@ -31,7 +31,7 @@
           src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
           width="100"
         />-->
-        <span class="headline">Capensa Cursos</span>
+        <span class="headline font-weight-bold">Capensa Cursos</span>
       </div>
 
       <v-spacer></v-spacer>

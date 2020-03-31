@@ -139,7 +139,6 @@ export default {
       // leverage pagination for loading another page of messages
     },
     handleOnType () {
-      console.log('Emit typing event')
     },
     editMessage (message) {
       const m = this.messageList.find(m => m.id === message.id)

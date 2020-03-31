@@ -8,7 +8,6 @@ export default {
         command: args.command,
         args: args.args
       }
-      console.log(command)
       return fetch(url, {
         method: 'POST',
         body: JSON.stringify(command),

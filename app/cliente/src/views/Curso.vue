@@ -54,8 +54,6 @@ export default {
         if (result.result === 200) {
           this.items = result.data.contenido
           this.title = result.data.nombre
-          console.log(this.items)
-          console.log(this.title)
         } else {
         }
       })

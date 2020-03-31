@@ -7,11 +7,16 @@
     <v-app-bar
       dark
       color="green lighten-2"
+      prominent
     >
-      <v-toolbar-title class="font-weight-bold headline">CURSOS DISPONIBLES</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
+      <v-container>
+      <v-row>
+        <v-toolbar-title class="font-weight-bold headline">CURSOS DISPONIBLES</v-toolbar-title>
+      </v-row>
+      <v-row>
+        <v-toolbar-title class="font-weight-bold subtitle-1">(Haz click en el curso de tu interés)</v-toolbar-title>
+      </v-row>
+    </v-container>
     </v-app-bar>
 
     <v-container>
@@ -24,11 +29,11 @@
           <v-card
             :color="item.color"
             dark
+            @click="$router.push('/presentacion/' + item.id)"
           >
             <div class="d-flex flex-no-wrap justify-space-between">
               <v-img
                 :src="require('@/assets/img/' + item.id + '.' + item.ext)"
-                @click="$router.push('/presentacion/' + item.id)"
               >
               </v-img>
             </div>
