@@ -6,8 +6,11 @@ const session = require('express-session');
 
 const admin = require('./db/admin');
 const user = require('./db/user');
-const cursos = require('./db/cursos');
 const contenido = require('./contenido/contenido');
+
+const cursos = require('./db/cursos');
+const inscripciones = require('./db/inscripciones');
+
 const app = express();
 
 app.use(morgan('tiny'));
@@ -22,7 +25,9 @@ app.use(session({
 function handle(req, res, module) {
   try {
     // req.session.username = true // temporal, salta la autenticación
-    module[req.body.command](req.body.args, req.session).then((response) => {
+    module[req.body.command]
+    (req.body.args, req.session, req.headers['x-forwarded-for'])
+    .then((response) => {
       res.json(response);
     });
   } catch (error) {
@@ -30,7 +35,7 @@ function handle(req, res, module) {
     res.json(error);
   }
 }
-
+/*
 app.post('/admin', function(req, res) {
   handle(req, res, admin)
 });
@@ -48,6 +53,11 @@ app.post('/cursos', (req, res) => {
 app.get('/contenido/:id', (req, res) => {
   contenido['contenido'](req, res);
 });
+*/
+app.post('/inscripciones', (req, res) => {
+  handle(req, res, inscripciones)
+});
+
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

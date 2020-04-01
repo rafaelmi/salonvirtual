@@ -3,7 +3,7 @@
     justify="center"
   >
   <v-col cols="6">
-    <v-snackbar v-model="alert.sw" :color="alert.color" top>
+    <v-snackbar v-model="alert.sw" :color="alert.color" bottom>
       <v-icon dark>mdi-check-circle</v-icon>
       <span class="title pl-1" :top="true" v-text="alert.msg"/>
       <v-spacer/>
@@ -15,12 +15,12 @@
       <v-card-title>
         <span class="headline">{{ title }}</span>
         <v-spacer/>
-        <v-btn
+        <v-btn v-if="swCloseButton"
           icon
           x-large
           @click="close"
         >
-        <v-icon>mdi-close</v-icon>
+          <v-icon>mdi-close</v-icon>
       </v-btn>
       </v-card-title>
       <v-card-text>
@@ -104,13 +104,13 @@
           </template>
         </cmpConfirm>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
+        <v-btn v-if="swCloseButton" color="blue darken-1" text @click="close">Cerrar</v-btn>
         <v-btn
           color="blue darken-1"
           text @click="save"
           :disabled="swFormDisabled"
         >
-          Guardar
+          Enviar
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -133,6 +133,10 @@ export default {
 
   props: {
     value: Boolean,
+    title: {
+      type: String,
+      default: 'Registrarse'
+    },
     swEditButton: {
       type: Boolean,
       default: false
@@ -149,14 +153,19 @@ export default {
       type: Boolean,
       default: false
     },
-    api: Object
+    swCloseButton: {
+      type: Boolean,
+      default: true
+    },
+    api: Object,
+    id: String
   },
 
   data: () => ({
     fields: [
-      { value: '_id', text: 'Usuario', type: 'username', required: true, editable: false },
-      { value: 'password', text: 'Password', type: 'password', required: true, editable: false },
-      { value: 'password2', text: 'Repetir Password', type: 'password', required: true, editable: false },
+      // { value: '_id', text: 'Usuario', type: 'username', required: true, editable: false },
+      // { value: 'password', text: 'Password', type: 'password', required: true, editable: false },
+      // { value: 'password2', text: 'Repetir Password', type: 'password', required: true, editable: false },
       { value: 'nombre', text: 'Nombre', type: 'nombre', required: true, editable: false },
       {
         value: 'profesion',
@@ -167,12 +176,31 @@ export default {
         options: ['LICENCIADO(A)', 'MÉDICO(A)', 'OTRO'],
         required: true
       },
-      { value: 'telefono', text: 'Teléfono', type: 'telefono' },
-      { value: 'pais', text: 'País', type: 'pais', required: true }
+      { value: 'telefono', text: 'Teléfono', type: 'telefono', required: true },
+      {
+        value: 'pais',
+        text: 'País',
+        type: 'select',
+        // icon: 'mdi-doctor',
+        icon: 'mdi-flag',
+        options: [
+          'PARAGUAY',
+          'ARGENTINA',
+          'BRASIL',
+          'CHILE',
+          'BOLIVIA',
+          'PERU',
+          'COLOMBIA',
+          'VENEZUELA',
+          'ECUADOR',
+          'OTRO'
+        ],
+        required: true
+      }
+      // { value: 'pais', text: 'País', type: 'pais', required: true }
     ],
-    title: 'Registrarse',
     editedItem: {
-      pais: 'Paraguay'
+      pais: 'PARAGUAY'
     },
     datePicker: new Date().toISOString().substr(0, 10),
     valid: false,
@@ -236,8 +264,8 @@ export default {
             item.rules.push(val => !this.isSave || val.length >= 4 || 'Mínimo 4 caracteres')
             break
           case 'nombre':
-            item.rules.push(val => val.length <= 30 || 'Máximo 30 caracteres')
-            item.rules.push(val => !this.isSave || val.length >= 5 || 'Mínimo 5 caracteres')
+            // item.rules.push(val => val.length <= 30 || 'Máximo 30 caracteres')
+            // item.rules.push(val => !this.isSave || val.length >= 5 || 'Mínimo 5 caracteres')
             break
           case 'cedula': {
             const msg = this.toMilSeparator(this.editedItem[item.value])
@@ -289,7 +317,7 @@ export default {
       this.apiCommand(Object.assign(
         {},
         opts ? opts.api || this.api : this.api,
-        { args: this.editedItem }
+        { args: Object.assign(this.editedItem, { curso: this.id }) }
       ))
         .then((result) => {
           if (result.result === 200) {
@@ -298,7 +326,7 @@ export default {
               this.$refs.form.reset()
             }
             Object.assign(this.alert, {
-              msg: 'Operación exitosa.',
+              msg: 'Inscripción exitosa. En breve nos estarémos comunicando con usted',
               sw: true,
               color: 'success'
             })
@@ -309,7 +337,7 @@ export default {
             } */
           } else {
             Object.assign(this.alert, {
-              msg: 'Operación rechazada.',
+              msg: 'Inscripción fallida. Inténtelo de nuevo mas tarde.',
               sw: true,
               color: 'error'
             })

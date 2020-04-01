@@ -58,6 +58,53 @@
       </v-carousel>
     </v-card-text>
   </v-card>
+  <v-card
+    class="mx-auto"
+    max-width="900"
+    color="green lighten-5"
+  >
+    <v-app-bar
+      :color="swInscripcion ? 'green lighten-5' : 'green lighten-3'"
+      prominent
+    >
+      <v-container v-if="!swInscripcion">
+        <v-row>
+          <v-toolbar-title class="font-weight-bold headline">INSCRIPCIÓN COMPLETADA!</v-toolbar-title>
+        </v-row>
+        <v-row>
+          <v-toolbar-title class="font-weight-bold subtitle-1">Pronto nos pondrémos en contacto con vos</v-toolbar-title>
+        </v-row>
+        <v-row>
+          <v-icon>mdi-whatsapp</v-icon>
+          <v-toolbar-title class="font-weight-bold subtitle-1">0971 429 999</v-toolbar-title>
+        </v-row>
+      </v-container>
+      <v-container v-else>
+        <v-row>
+        <v-toolbar-title class="font-weight-bold headline">INSCRÍBETE YA!</v-toolbar-title>
+        </v-row>
+        <v-row>
+          <v-toolbar-title class="font-weight-bold subtitle-1">Al whatsapp: 0971 429 999</v-toolbar-title>
+        </v-row>
+        <v-row>
+          <v-toolbar-title class="font-weight-bold subtitle-1">O ingresando tus datos a continuación:</v-toolbar-title>
+        </v-row>
+      </v-container>
+    </v-app-bar>
+  </v-card>
+  <v-card
+    class="mx-auto"
+    max-width="900"
+    color="green lighten-5"
+  >
+    <cmpRegistro v-if="swInscripcion"
+      :swCloseButton="false"
+      title="Inscripción"
+      :api="api"
+      :id="item.id"
+      @success="swInscripcion = false"
+    />
+  </v-card>
 </div>
 </template>
 
@@ -66,6 +113,7 @@ import mixCursos from '@/mixins/cursos'
 
 export default {
   components: {
+    cmpRegistro () { return import('@/views/Registro.vue') }
   },
 
   mixins: [
@@ -73,6 +121,11 @@ export default {
   ],
 
   data: () => ({
+    api: {
+      url: 'inscripciones',
+      command: 'create'
+    },
+    swInscripcion: true
   }),
 
   computed: {

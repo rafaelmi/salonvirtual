@@ -3,18 +3,6 @@ const cursos = [
     id: '5e7f733f3ede40fc1961ac3b',
     title: 'Alteraciones Cardiovasculares',
     ext: 'jpg',
-    /* slides: [
-      { id: '5e7fbf733ede40fc1961ac40', ext: 'jpg' },
-      { id: '5e7fbf753ede40fc1961ac41', ext: 'jpg' },
-      { id: '5e7fbf753ede40fc1961ac42', ext: 'jpg' },
-      { id: '5e7fbf763ede40fc1961ac43', ext: 'jpg' },
-      { id: '5e7f733f3ede40fc1961ac3b', ext: 'jpg' },
-      { id: '5e7fbf773ede40fc1961ac45', ext: 'jpg' },
-      { id: '5e7fbf773ede40fc1961ac46', ext: 'jpg' },
-      { id: '5e7fbf783ede40fc1961ac47', ext: 'jpg' },
-      { id: '5e7fbf783ede40fc1961ac48', ext: 'jpg' },
-      { id: '5e7fbf793ede40fc1961ac49', ext: 'jpg' }
-    ], */
     video: '5e7a7baa5766d124e3396578.mp4'
   },
   { id: '5e7f76a13ede40fc1961ac3c', title: 'Electrocardiografía', ext: 'jpg', video: '5e7fd5233ede40fc1961ac4e.mp4' },
