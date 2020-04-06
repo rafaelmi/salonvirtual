@@ -14,18 +14,23 @@ function login(args, session) {
                         .digest('hex');
   return users.findOne({_id: args.username,
                         password: args.password},
-                      {castIds: false})
+                        {
+                          castIds: false,
+                          fields: {_id: 0, password: 0}
+                        })
   .then(data => {
+    var res;
     if (!data) {
-      return response(401);
+      res = 401;
+    } else {
+      // data.username = data._id;
+      // delete data._id;
+      // delete data.password;
+      data.username = args.username;
+      Object.assign(session, data);
+      res = 200;
     }
-    data.username = data._id;
-    delete data._id;
-    delete data.password;
-    args.session.username = data.username;
-    args.session.nombre = data.nombre;
-    args.session.tipo = data.tipo;
-    return response(200, data);
+    return response(res, data);
   });
 }
 
@@ -34,15 +39,19 @@ function info(args, session) {
     return Promise.resolve(response(403));
   }
   return users.findOne({_id: session.username},
-                      {castIds: false})
+                        {
+                          castIds: false,
+                          fields: {_id: 0, password: 0}
+                        })
   .then(data => {
+    var res;
     if (!data) {
-      return response(500);
+      res = 500;
+    } else {
+      data.username = session.username;
+      res = 200;
     }
-    data.username = data._id;
-    delete data._id;
-    delete data.password;
-    return response(200, data);
+    return response(res, data);
   });
 }
 
@@ -51,7 +60,7 @@ function logout(args, session) {
   if (!session.username) {
     return Promise.resolve(response(453));
   }
-  args.session.destroy();
+  session.destroy();
   return Promise.resolve(response(200));
 }
 
@@ -79,6 +88,6 @@ function update(args) {
 module.exports = {
     login,
     logout,
-    info,
-    update
+    info
+    // update
 };

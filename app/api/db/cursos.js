@@ -9,7 +9,7 @@ function get(args, session) {
   if (!session.username) {
     return Promise.resolve(response(403));
   }
-  return cursos.findOne({_id: args._id})
+  return cursos.find()
   .then(data => {
     return response(200, data);
   });

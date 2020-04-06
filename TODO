@@ -1,0 +1,15 @@
+#PENDING
+- Skeleton de espera de contenido
+- Slide para el contenido pdf
+- Breadcrumbs de navegación
+- Chequeo de permisos para contenido en API (probar)
+- Establecer listado de contenido en orden descendente
+- Establecer timer para la sesión
+
+# DONE
+- Barra de control de contenido (color y porcentaje de carga)
+- Aceptar usuario con mayusculas
+- Establecer tecla ENTER para ingresar credenciales
+- Arreglar tamaño de los botones de la barra
+
+#NOTES

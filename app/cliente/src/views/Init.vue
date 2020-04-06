@@ -80,6 +80,27 @@
       class="mx-auto"
       max-width="900"
       color="green lighten-5"
+      @click="$router.push('/home')"
+    >
+      <v-app-bar
+        color="green lighten-5"
+        class="blue--text text--darken-4"
+        prominent
+      >
+        <v-container>
+          <v-row>
+            <v-toolbar-title class="font-weight-bold headline">¿YA TIENES TU CUENTA?</v-toolbar-title>
+          </v-row>
+          <v-row>
+            <v-toolbar-title class="font-weight-bold subtitle-1">Haz click aquí para ingresar</v-toolbar-title>
+          </v-row>
+        </v-container>
+      </v-app-bar>
+    </v-card>
+    <v-card
+      class="mx-auto"
+      max-width="900"
+      color="green lighten-5"
     >
       <!--<v-card-text class="text-center">
         <video controls class="black" width="100%" autoplay>
