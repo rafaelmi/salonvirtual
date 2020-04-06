@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path')
 module.exports = {
   transpileDependencies: [
     'vuetify',
@@ -13,5 +14,5 @@ module.exports = {
         pathRewrite: { '/api': '' }
       },
     },
-  },
+  }
 };

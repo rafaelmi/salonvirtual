@@ -33,25 +33,35 @@ const routes = [
     component: Login
   },
   {
+    path: '/logout',
+    name: 'Logout',
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { requiresAuth: true }
   },
   {
     path: '/cursos/:id',
     name: 'Cursos',
-    component: Curso
+    component: Curso,
+    meta: { requiresAuth: true }
   },
   {
     path: '/contenido/:id',
     name: 'Contenido',
-    component: Contenido
+    component: Contenido,
+    meta: { requiresAuth: true }
   },
   {
     path: '/chat/:id',
     name: 'Chat',
-    component: Chat
-  },
+    component: Chat,
+    meta: { requiresAuth: true }
+  }
+  /*
   {
     path: '/about',
     name: 'About',
@@ -59,9 +69,10 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/About.vue')
+      return import( webpackChunkName: "about"  '../views/About.vue')
     }
   }
+  */
 ]
 
 const router = new VueRouter({

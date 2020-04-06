@@ -6,22 +6,15 @@
       dark
       class="elevation-1"
     >
-      <div class="d-flex align-center">
-        <v-list-item-avatar>
-          <!--<v-img
-            class="shrink mr-2"
-            contain
-            :src="require('@/assets/logo_capensa.jpg')"
-            transition="scale-transition"
-            width="40"
-          />-->
+      <div class="d-flex align-left">
+        <!--<v-list-item-avatar>
           <v-img
             contain
             :src="require('@/assets/logo_capensa.jpeg')"
             transition="scale-transition"
             width="40"
           />
-        </v-list-item-avatar>
+        </v-list-item-avatar>-->
         <!--
         <v-img
           alt="Vuetify Name"
@@ -31,19 +24,49 @@
           src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
           width="100"
         />-->
-        <span class="headline font-weight-bold">Capensa Cursos</span>
+        <span class="headline font-weight-bold">Capensa</span>
       </div>
 
       <v-spacer></v-spacer>
 
-      <!--<v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>-->
+      <template v-if="$store.state.logged">
+        <v-btn
+          text
+          @click="$router.push('/home')"
+        >
+          <v-icon>mdi-home</v-icon>
+          Cursos
+        </v-btn>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              text
+              v-on="on"
+            >
+              <v-icon>mdi-account</v-icon>
+              <span class="text-lowercase px-0">
+                {{$store.state.user.username}}
+              </span>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              @click="$router.push('/logout')"
+            >
+              <v-list-item-title>Salir</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
+      <template v-else>
+        <v-btn
+          text
+          @click="$router.push('/login')"
+        >
+          <v-icon>mdi-login</v-icon>
+          Ingresar
+        </v-btn>
+      </template>
     </v-app-bar>
 
     <v-content>
@@ -57,10 +80,14 @@ export default {
   name: 'App',
 
   components: {
+    // cmpLogin () { return import('@/components/Login.vue') }
   },
 
   data: () => ({
     //
-  })
+  }),
+
+  created: {
+  }
 }
 </script>

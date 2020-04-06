@@ -2,7 +2,7 @@
   <v-row
     justify="center"
   >
-  <v-col cols="6">
+  <v-col cols="12" sm="6">
     <v-snackbar v-model="alert.sw" :color="alert.color" bottom>
       <v-icon dark>mdi-check-circle</v-icon>
       <span class="title pl-1" :top="true" v-text="alert.msg"/>

@@ -35,25 +35,24 @@ function handle(req, res, module) {
     res.json(error);
   }
 }
-/*
+
 app.post('/admin', function(req, res) {
   handle(req, res, admin)
 });
 
 app.post('/user', (req, res) => {
-  req.body.args.session = req.session;
   handle(req, res, user)
 });
 
 app.post('/cursos', (req, res) => {
-  req.body.args.session = req.session;
   handle(req, res, cursos)
 });
 
+
 app.get('/contenido/:id', (req, res) => {
-  contenido['contenido'](req, res);
+  contenido['get'](req, res);
 });
-*/
+
 app.post('/inscripciones', (req, res) => {
   handle(req, res, inscripciones)
 });
