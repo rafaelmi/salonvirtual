@@ -12,7 +12,9 @@ export default new Vuex.Store({
     logged: false,
     nextRoute: '/home',
     user: null,
-    cursos: null
+    cursos: null,
+    chats: {},
+    appBarOverlay: 'z-index: auto'
   },
 
   mutations: {
@@ -24,16 +26,38 @@ export default new Vuex.Store({
       delete user.cursos
       state.user = Object.assign({}, user)
       state.logged = true
+      state.cursos.forEach(curso => {
+        curso.contenido.forEach(contenido => {
+          if (contenido.hasChat) {
+            const chatId = contenido._id
+            const chat = {}
+            chat[chatId] = []
+            state.chats = Object.assign({}, state.chats, chat)
+            this._vm.$socket.emit('subscribe', { id: chatId })
+          }
+        })
+      })
     },
     logout (state) {
+      Object.keys(state.chats).forEach(chatId => {
+        this._vm.$socket.emit('unsubscribe', { id: chatId })
+      })
       Object.assign(state, {
         logged: false,
         started: false,
-        user: null
+        user: null,
+        chats: {}
       })
     },
     setNextRoute (state, route) {
       state.nextRoute = route
+    },
+    message (state, messages) {
+      messages.forEach((data) => {
+        state.chats[data.contenido].push(data.message)
+        // state.chats = Object.assign({}, state.chats)
+        // state.chats[data.contenido] = [...state.chats[data.contenido], data.message]
+      })
     }
   },
 
@@ -104,7 +128,12 @@ export default new Vuex.Store({
           reject(new Error('Error Interno'))
         }
       })
+    },
+
+    SOCKET_message ({ commit }, messages) {
+      commit('message', messages)
     }
+
   },
 
   modules: {

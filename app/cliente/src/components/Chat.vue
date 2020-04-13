@@ -19,9 +19,10 @@
     :messageStyling="messageStyling"
     @onType="handleOnType"
     @edit="editMessage"
+    style="z-index: 2"
   >
     <template v-slot:header>
-      <span class="title">Preguntas y respuestas</span>
+      <span class="title">Chat de Preguntas</span>
     </template>
     <template v-slot:text-message-body="{ message }">
       <span class="font-weight-bold">
@@ -53,6 +54,7 @@ import CloseIcon from 'vue-beautiful-chat/src/assets/close-icon.png'
 import OpenIcon from 'vue-beautiful-chat/src/assets/logo-no-bg.svg'
 import FileIcon from 'vue-beautiful-chat/src/assets/file.svg'
 import CloseIconSvg from 'vue-beautiful-chat/src/assets/close.svg'
+// import { mdiChat } from '@mdi/js'
 
 // const API_URL = '/contenido'
 
@@ -63,6 +65,10 @@ export default {
   mixins: [
     Api
   ],
+
+  props: {
+    messages: Array
+  },
 
   data: () => ({
     title: '',
@@ -99,10 +105,11 @@ export default {
     ], // the list of all the participant of the conversation. `name` is the user name, `id` is used to establish the author of a message, `imageUrl` is supposed to be the user avatar.
     // titleImageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png',
     titleImageUrl: '',
-    messageList: [
+    /* messageList: [
       { type: 'text', author: 'me', data: { text: 'Pregunta!', meta: '23-03-2020 12:43' } },
       { type: 'text', author: 'profesor', data: { text: 'Respuesta', meta: '23-03-2020 12:45' } }
     ], // the list of the messages to show, can be paginated and adjusted dynamically
+    */
     newMessagesCount: 0,
     isChatOpen: false, // to determine whether the chat window should be open or closed
     showTypingIndicator: '', // when set to a value matching the participant.id it shows the typing indicator for the specific user
@@ -118,12 +125,12 @@ export default {
         bg: '#ffffff'
       },
       sentMessage: {
-        bg: '#4e8cff',
-        text: '#ffffff'
+        bg: '#C5E1A5', // '#4e8cff',
+        text: 'black' // '#ffffff'
       },
       receivedMessage: {
-        bg: '#eaeaea',
-        text: '#222222'
+        bg: '#E0E0E0', // '#eaeaea',
+        text: 'black' // '#222222'
       },
       userInput: {
         bg: '#f4f7f9',
@@ -134,16 +141,33 @@ export default {
     messageStyling: true // enables *bold* /emph/ _underline_ and such (more info at github.com/mattezza/msgdown)
   }),
 
+  computed: {
+    messageList () {
+      return this.messages.map(elem => {
+        if (elem.author === this.$store.state.user.username) {
+          elem.author = 'me'
+        }
+        return elem
+      })
+    }
+  },
+
   methods: {
     sendMessage (text) {
       if (text.length > 0) {
         this.newMessagesCount = this.isChatOpen ? this.newMessagesCount : this.newMessagesCount + 1
+        // this.onMessageWasSent({ id: this.$route.params.id, author: this.$store.state.user.username, type: 'text', data: { text } })
         this.onMessageWasSent({ author: 'support', type: 'text', data: { text } })
       }
     },
     onMessageWasSent (message) {
       // called when the user sends a message
-      this.messageList = [...this.messageList, message]
+      // this.messageList = [...this.messageList, message]
+      Object.assign(message, {
+        id: this.$route.params.id,
+        author: this.$store.state.user.username
+      })
+      this.$socket.emit('message', message)
     },
     openChat () {
       // called when the user clicks on the fab button to open the chat

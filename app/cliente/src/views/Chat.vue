@@ -32,6 +32,7 @@
 import Api from '@/mixins/api'
 import CloseIcon from 'vue-beautiful-chat/src/assets/close-icon.png'
 import OpenIcon from 'vue-beautiful-chat/src/assets/logo-no-bg.svg'
+// import { mdiMessage } from '@mdi/js'
 import FileIcon from 'vue-beautiful-chat/src/assets/file.svg'
 import CloseIconSvg from 'vue-beautiful-chat/src/assets/close.svg'
 

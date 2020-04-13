@@ -21,12 +21,13 @@ const codes = {
 
 function response(code, data=null) {
   const body = codes[code];
-  return {
-    result: code,
-    title: body.title,
-    details: body.details,
-    data: data
-  }
+  return body ? {
+      result: code,
+      title: body.title,
+      details: body.details,
+      data: data
+    }
+    : {title: code};
 }
 
 module.exports = {

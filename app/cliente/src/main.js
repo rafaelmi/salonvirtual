@@ -1,13 +1,31 @@
 import Vue from 'vue'
+import VueCookies from 'vue-cookies'
+import VueSocketIO from 'vue-socket.io'
+import Chat from 'vue-beautiful-chat'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import Chat from 'vue-beautiful-chat'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 
 Vue.config.productionTip = false
+
+Vue.use(VueCookies)
+
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: '/', // 'http://localhost:8080',
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  },
+  options: {
+    // autoConnect: false,
+    path: '/api/socket.io'
+  }
+}))
 
 Vue.use(Chat)
 

@@ -84,7 +84,8 @@ export default {
     },
     icon (ext) {
       const icons = {
-        pdf: 'pdf.png'
+        pdf: 'pdf.png',
+        mp4: 'mp4.jpg'
       }
       return icons[ext]
     }

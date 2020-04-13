@@ -12,15 +12,22 @@ const cursos = require('./db/cursos');
 const inscripciones = require('./db/inscripciones');
 
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const sessionMiddleware = session({
+  secret: '6bb9e713c2deb3d6c67deeb8f8fceb98',
+  resave: false,
+  saveUninitialized: true,
+})
+
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, socket.request.res, next);
+});
 
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(bodyParser.json());
-app.use(session({
-  secret: '6bb9e713c2deb3d6c67deeb8f8fceb98',
-  resave: false,
-  saveUninitialized: true,
-}))
+app.use(sessionMiddleware);
 
 function handle(req, res, module) {
   try {
@@ -48,9 +55,31 @@ app.post('/cursos', (req, res) => {
   handle(req, res, cursos)
 });
 
-
 app.get('/contenido/:id', (req, res) => {
   contenido['get'](req, res);
+});
+
+io.on('connection', (socket) => {
+  const session = socket.request.session
+  socket.on('subscribe', (args) => {
+    contenido['subscribe'](args, session, socket)
+      .then(() => {
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  });
+
+  socket.on('message', (args) => {
+    const session = socket.request.session
+    contenido['message'](args, session, socket)
+      .then(() => {
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  });
+
 });
 
 app.post('/inscripciones', (req, res) => {
@@ -59,6 +88,6 @@ app.post('/inscripciones', (req, res) => {
 
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => {
-    console.log(`listening on ${port}`);
+server.listen(port, () => {
+  console.log(`listening on ${port}`);
 });

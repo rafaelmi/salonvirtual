@@ -5,6 +5,7 @@
       color="primary"
       dark
       class="elevation-1"
+      :style="appBarOverlay"
     >
       <div class="d-flex align-left">
         <!--<v-list-item-avatar>
@@ -86,6 +87,25 @@ export default {
   data: () => ({
     //
   }),
+
+  computed: {
+    appBarOverlay () {
+      if (this.$route.name === 'Contenido') {
+        let contenido
+        this.$store.state.cursos.find(
+          el => {
+            return (contenido = el.contenido.find(
+              el => el._id === this.$route.params.id
+            ))
+          }
+        )
+        if (contenido.hasChat) {
+          return 'z-index: auto'
+        }
+      }
+      return ''
+    }
+  },
 
   created: {
   }
