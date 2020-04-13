@@ -1,10 +1,13 @@
 const monk = require('monk');
 const db = require('../db/connection');
 const fs = require('fs');
+const response = require('../db/response').response;
 
 const cursos = db.get('cursos');
 const usuarios = db.get('usuarios');
 const contenido = db.get('viewContenido');
+const chat = db.get('chat');
+// const viewChat = db.get('viewChat');
 
 function get(req, res) {
   const id = req.params.id;
@@ -19,7 +22,7 @@ function get(req, res) {
   }*/
 
   return contenido.find(
-    {_id: username, contenido: monk.id(id)},
+    {_id: username, 'contenido._id': monk.id(id)},
     {castIds: false}
   ).then(data => {
     if (!data){
@@ -57,6 +60,74 @@ function get(req, res) {
   });
 }
 
+function subscribe (args, session, socket) {
+  return new Promise((resolve, reject) => {
+    try {
+      const username = session.username;
+      const id = args.id;
+      /*if (!username) {
+        throw 403
+      }*/
+      return contenido.findOne(
+        {/*_id: username, */'contenido._id': monk.id(id), 'contenido.hasChat': true},
+        {castIds: false}
+      )
+        .then(data => {
+          try {
+            if (!data){
+              throw 403
+            }
+            socket.join(id);
+            resolve();
+            chat.find(
+              {contenido: monk.id(id)},
+              {fields: {_id: 0}}
+            )
+              .then(messages => {
+                socket.emit('message', messages);
+              })
+          } catch (e) {
+            reject(response(e).title);
+          }
+        });
+    } catch (e) {
+      reject(response(e).title);
+    }
+  })
+}
+
+function message (args, session, socket) {
+  return new Promise((resolve, reject) => {
+    try {
+      const username = session.username;
+      const contenido = args.id;
+      /*if (!username || socket.rooms.indexOf(id) < 0) {
+        throw 403
+      }*/
+      args.fecha = new Date()
+      delete(args.id)
+      chat.insert(
+        {contenido: monk.id(contenido), message: args}
+      ).then(data => {
+        try {
+          if (!data){
+            throw 500
+          }
+          resolve();
+          socket.to(contenido).emit('message', [data]);
+          socket.emit('message', [data]);
+        } catch (e) {
+          reject(response(e).title);
+        }
+      });
+    } catch (e) {
+      reject(response(e).title);
+    }
+  })
+}
+
 module.exports = {
-  get
+  get,
+  subscribe,
+  message
 };

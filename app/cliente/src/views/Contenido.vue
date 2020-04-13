@@ -58,12 +58,21 @@
       </div>
     </template>
     <template v-else>
-      <v-card-text class="text-center">
-        <video controls class="black" width="280"> <!-- width="320" height="240" -->
-          <source :src="'/api/contenido/' + $route.params.id" type="video/mp4"/>
-        </video>
-      </v-card-text>
-      <chat/>
+      <v-card
+        class="mx-auto"
+        max-width="900"
+        color="green lighten-5"
+      >
+        <v-card-title class="headline font-weight-bold blue--text text--darken-4">
+          {{info.title}}
+        </v-card-title>
+        <v-card-text class="text-center display-1 font-weight-light blue--text text--darken-4">
+          <video controls class="black" width="100%"> <!-- width="320" height="240" -->
+            <source :src="'/api/contenido/' + $route.params.id" type="video/mp4"/>
+          </video>
+        </v-card-text>
+      </v-card>
+      <chat :messages="$store.state.chats[$route.params.id]"/>
     </template>
   </div>
 </template>

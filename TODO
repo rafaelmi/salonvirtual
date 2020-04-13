@@ -5,6 +5,8 @@
 - Chequeo de permisos para contenido en API (probar)
 - Establecer listado de contenido en orden descendente
 - Establecer timer para la sesión
+- Chat
+- Transformar path de proxy API en nginx
 
 # DONE
 - Barra de control de contenido (color y porcentaje de carga)
@@ -13,3 +15,14 @@
 - Arreglar tamaño de los botones de la barra
 
 #NOTES
+
+#DB Views
+db.getCollectionInfos()
+db.createView("viewCursos", "cursos",[{$lookup: {from: "contenido", localField: "contenido", foreignField: "_id", as: "contenido"}}]);
+db.createView("viewUsuarios", "usuarios",[{$lookup: {from: "viewCursos", localField: "cursos", foreignField: "_id", as: "cursos"}}]);
+// db.createView("viewContenido", "viewUsuarios", [{"$unwind" : "$cursos"}, {"$project" : {"contenido" : "$cursos.contenido._id"}}])
+// db.createView("viewContenido", "viewUsuarios", [{"$unwind" : "$cursos"}, {"$project" : {"contenido" : "$cursos.contenido"}}])
+// db.createView("viewContenido", "viewUsuarios", [{"$unwind" : "$cursos"}, {"$project" : {"contenido" : "$cursos.contenido"}},{"$unwind": "$contenido"}, {$lookup: {from: "chat", localField: "contenido._id", foreignField: "contenido", as: "chat"}},{$project: {"chat._id": 0, "chat.contenido": 0}}])
+db.createView("viewContenido", "viewUsuarios", [{"$unwind" : "$cursos"}, {"$project" : {"contenido" : "$cursos.contenido"}},{"$unwind": "$contenido"}])
+// db.chat.aggregate([{$lookup: {from: 'viewContenido', localField: 'contenido', foreignField: 'contenido._id', as: 'foreignContenido'}},{$project: {'foreignContenido._id': 1}])
+db.createView("viewChat", "chat", [{$lookup: {from: 'viewContenido', let: {contenido: '$contenido'}, pipeline: [{$match: {$expr: {$eq: ['$$contenido', '$contenido._id']}}},{$project: {participante: '$_id', '_id': '$contenido._id'}}], as: 'contenido'}}])
