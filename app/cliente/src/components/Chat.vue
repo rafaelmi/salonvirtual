@@ -164,7 +164,7 @@ export default {
       // called when the user sends a message
       // this.messageList = [...this.messageList, message]
       Object.assign(message, {
-        id: this.$route.params.id,
+        id: this.$route.params.idCurso,
         author: this.$store.state.user.username
       })
       this.$socket.emit('message', message)

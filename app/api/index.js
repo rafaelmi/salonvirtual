@@ -62,7 +62,8 @@ app.get('/contenido/:id', (req, res) => {
 io.on('connection', (socket) => {
   const session = socket.request.session
   socket.on('subscribe', (args) => {
-    contenido['subscribe'](args, session, socket)
+    // contenido['subscribe'](args, session, socket)
+    cursos['subscribe'](args, session, socket)
       .then(() => {
       })
       .catch((error) => {
@@ -72,7 +73,7 @@ io.on('connection', (socket) => {
 
   socket.on('message', (args) => {
     const session = socket.request.session
-    contenido['message'](args, session, socket)
+    cursos['message'](args, session, socket)
       .then(() => {
       })
       .catch((error) => {
@@ -85,7 +86,6 @@ io.on('connection', (socket) => {
 app.post('/inscripciones', (req, res) => {
   handle(req, res, inscripciones)
 });
-
 
 const port = process.env.PORT || 4000;
 server.listen(port, () => {

@@ -15,7 +15,7 @@ Vue.use(VueCookies)
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: '/', // 'http://localhost:8080',
+  connection: 'https://capensacursos.com', //  'http://192.168.0.3:8080',
   vuex: {
     store,
     actionPrefix: 'SOCKET_',
@@ -23,7 +23,7 @@ Vue.use(new VueSocketIO({
   },
   options: {
     // autoConnect: false,
-    path: '/api/socket.io'
+    // path: '/api/socket.io'
   }
 }))
 

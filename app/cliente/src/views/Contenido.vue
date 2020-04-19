@@ -5,7 +5,7 @@
       <v-spacer/>
     </v-toolbar>-->
     <template v-if="info.ext == 'pdf'">
-      <pdf :src="'/api/contenido/' + $route.params.id"
+      <pdf :src="'/api/contenido/' + $route.params.idContenido"
         :page="pdf.setPage"
         @num-pages="pdf.pageCount = $event"
         @page-loaded="pdf.currentPage = $event"
@@ -67,12 +67,12 @@
           {{info.title}}
         </v-card-title>
         <v-card-text class="text-center display-1 font-weight-light blue--text text--darken-4">
-          <video controls class="black" width="100%"> <!-- width="320" height="240" -->
-            <source :src="'/api/contenido/' + $route.params.id" type="video/mp4"/>
+          <video controls class="black" width="100%" oncontextmenu="return false;"> <!-- width="320" height="240" -->
+            <source :src="'/api/contenido/' + $route.params.idContenido" type="video/mp4"/>
           </video>
         </v-card-text>
       </v-card>
-      <chat :messages="$store.state.chats[$route.params.id]"/>
+      <!--<chat :messages="$store.state.chats[$route.params.idContenido]"/>-->
     </template>
   </div>
 </template>
@@ -80,13 +80,13 @@
 <script>
 import pdf from 'vue-pdf'
 import Api from '@/mixins/api'
-import Chat from '@/components/Chat.vue'
+// import Chat from '@/components/Chat.vue'
 
 // const API_URL = '/contenido'
 
 export default {
   components: {
-    Chat,
+    // Chat,
     pdf
   },
 
@@ -110,7 +110,7 @@ export default {
       this.$store.state.cursos.find(
         el => {
           return (contenido = el.contenido.find(
-            el => el._id === this.$route.params.id
+            el => el._id === this.$route.params.idContenido
           ))
         }
       )

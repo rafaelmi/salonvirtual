@@ -90,6 +90,7 @@ export default {
 
   computed: {
     appBarOverlay () {
+      /*
       if (this.$route.name === 'Contenido') {
         let contenido
         this.$store.state.cursos.find(
@@ -104,6 +105,8 @@ export default {
         }
       }
       return ''
+      */
+      return (this.$route.name === 'Curso') ? 'z-index: auto' : ''
     }
   },
 

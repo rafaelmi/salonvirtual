@@ -7,6 +7,7 @@
 - Establecer timer para la sesión
 - Chat
 - Transformar path de proxy API en nginx
+- Remover titulo 'CURSOS' de la pagina de curso2
 
 # DONE
 - Barra de control de contenido (color y porcentaje de carga)
@@ -26,3 +27,5 @@ db.createView("viewUsuarios", "usuarios",[{$lookup: {from: "viewCursos", localFi
 db.createView("viewContenido", "viewUsuarios", [{"$unwind" : "$cursos"}, {"$project" : {"contenido" : "$cursos.contenido"}},{"$unwind": "$contenido"}])
 // db.chat.aggregate([{$lookup: {from: 'viewContenido', localField: 'contenido', foreignField: 'contenido._id', as: 'foreignContenido'}},{$project: {'foreignContenido._id': 1}])
 db.createView("viewChat", "chat", [{$lookup: {from: 'viewContenido', let: {contenido: '$contenido'}, pipeline: [{$match: {$expr: {$eq: ['$$contenido', '$contenido._id']}}},{$project: {participante: '$_id', '_id': '$contenido._id'}}], as: 'contenido'}}])
+
+db.usuarios.aggregate([{$match: {tipo: 'estudiante'}},{$lookup: {from: "cursos", localField: 'cursos', foreignField: '_id', as: 'curso'}},{$project: {_id: 1, nombre: 1, profesion: 1, telefono: 1, 'curso.title': 1}}] )

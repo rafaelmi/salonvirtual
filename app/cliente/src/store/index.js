@@ -27,15 +27,15 @@ export default new Vuex.Store({
       state.user = Object.assign({}, user)
       state.logged = true
       state.cursos.forEach(curso => {
-        curso.contenido.forEach(contenido => {
-          if (contenido.hasChat) {
-            const chatId = contenido._id
-            const chat = {}
-            chat[chatId] = []
-            state.chats = Object.assign({}, state.chats, chat)
-            this._vm.$socket.emit('subscribe', { id: chatId })
-          }
-        })
+      // curso.contenido.forEach(contenido => {
+      // if (contenido.hasChat) {
+        const chatId = curso._id
+        const chat = {}
+        chat[chatId] = []
+        state.chats = Object.assign({}, state.chats, chat)
+        this._vm.$socket.emit('subscribe', { id: chatId })
+      // }
+      // })
       })
     },
     logout (state) {
@@ -54,7 +54,7 @@ export default new Vuex.Store({
     },
     message (state, messages) {
       messages.forEach((data) => {
-        state.chats[data.contenido].push(data.message)
+        state.chats[data.curso].push(data.message)
         // state.chats = Object.assign({}, state.chats)
         // state.chats[data.contenido] = [...state.chats[data.contenido], data.message]
       })
