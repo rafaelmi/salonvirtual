@@ -8,7 +8,7 @@
       <template v-for="item in cursos">
         <v-list-item
           :key="item._id"
-          @click="$router.push('/cursos/' + item._id)"
+          @click="$router.push('/curso/' + item._id)"
         >
           <v-list-item-avatar tile>
             <!--<v-img :src="require('@/assets/' + item.avatar)"></v-img>-->

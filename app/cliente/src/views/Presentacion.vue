@@ -122,7 +122,7 @@ export default {
 
   data: () => ({
     api: {
-      url: 'inscripciones',
+      url: '/inscripciones',
       command: 'create'
     },
     swInscripcion: true

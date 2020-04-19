@@ -44,17 +44,30 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/cursos/:id',
-    name: 'Cursos',
+    path: '/curso/:idCurso',
+    name: 'Curso',
     component: Curso,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'contenido/:idContenido',
+        component: Contenido
+      },
+      {
+        path: 'chat',
+        name: 'Chat',
+        component: Chat,
+        meta: { requiresAuth: true }
+      }
+    ]
   },
+  /*
   {
     path: '/contenido/:id',
     name: 'Contenido',
     component: Contenido,
     meta: { requiresAuth: true }
-  },
+  }, */
   {
     path: '/chat/:id',
     name: 'Chat',
