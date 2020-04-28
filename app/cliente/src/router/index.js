@@ -61,6 +61,15 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/download/:idDownload',
+    name: 'Download',
+    meta: { requiresAuth: true },
+    // redirect: '/api/contenido/5e77e132d9fd1eaa0f1dba7e'
+    redirect: to => {
+      return 'localhost:8080/api/contenido/' + to.params.idDownload
+    }
+  },
   /*
   {
     path: '/contenido/:id',

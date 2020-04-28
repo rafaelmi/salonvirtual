@@ -22,6 +22,18 @@
                 <v-list-item-content>
                   <v-list-item-title v-html="item.title"></v-list-item-title>
                 </v-list-item-content>
+
+                <v-list-item-action v-if="!item.keyRequired">
+                  <v-btn
+                    icon
+                    :href="'/api/contenido/' + item._id"
+                    :download="item.title + '.' + item.ext"
+                    @click.stop
+                  >
+                    <v-icon color="green">mdi-download</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+
               </v-list-item>
               <v-divider :key="'divider-'+item._id" inset/>
             </template>

@@ -130,6 +130,20 @@ export default new Vuex.Store({
       })
     },
 
+    requestKey ({ dispatch, commit, state }, id) {
+      return new Promise((resolve, reject) => {
+        api.command({
+          url: '/contenido',
+          command: 'request',
+          args: { id: id }
+        })
+          .then((result) => {
+            if (result.result === 200) resolve(result.data.key)
+            else reject(result.title)
+          })
+      })
+    },
+
     SOCKET_message ({ commit }, messages) {
       commit('message', messages)
     }

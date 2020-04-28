@@ -5,15 +5,18 @@
 - Chequeo de permisos para contenido en API (probar)
 - Establecer listado de contenido en orden descendente
 - Establecer timer para la sesión
-- Chat
-- Transformar path de proxy API en nginx
-- Remover titulo 'CURSOS' de la pagina de curso2
+- Chat (autenticación)
+- Bloquear descarga de videos
+- Notificación de nuevo contenido
+- Upload de contenido
 
 # DONE
 - Barra de control de contenido (color y porcentaje de carga)
 - Aceptar usuario con mayusculas
 - Establecer tecla ENTER para ingresar credenciales
 - Arreglar tamaño de los botones de la barra
+- Remover titulo 'CURSOS' de la pagina de curso2
+- Transformar path de proxy API en nginx
 
 #NOTES
 
@@ -24,8 +27,68 @@ db.createView("viewUsuarios", "usuarios",[{$lookup: {from: "viewCursos", localFi
 // db.createView("viewContenido", "viewUsuarios", [{"$unwind" : "$cursos"}, {"$project" : {"contenido" : "$cursos.contenido._id"}}])
 // db.createView("viewContenido", "viewUsuarios", [{"$unwind" : "$cursos"}, {"$project" : {"contenido" : "$cursos.contenido"}}])
 // db.createView("viewContenido", "viewUsuarios", [{"$unwind" : "$cursos"}, {"$project" : {"contenido" : "$cursos.contenido"}},{"$unwind": "$contenido"}, {$lookup: {from: "chat", localField: "contenido._id", foreignField: "contenido", as: "chat"}},{$project: {"chat._id": 0, "chat.contenido": 0}}])
-db.createView("viewContenido", "viewUsuarios", [{"$unwind" : "$cursos"}, {"$project" : {"contenido" : "$cursos.contenido"}},{"$unwind": "$contenido"}])
 // db.chat.aggregate([{$lookup: {from: 'viewContenido', localField: 'contenido', foreignField: 'contenido._id', as: 'foreignContenido'}},{$project: {'foreignContenido._id': 1}])
 db.createView("viewChat", "chat", [{$lookup: {from: 'viewContenido', let: {contenido: '$contenido'}, pipeline: [{$match: {$expr: {$eq: ['$$contenido', '$contenido._id']}}},{$project: {participante: '$_id', '_id': '$contenido._id'}}], as: 'contenido'}}])
 
 db.usuarios.aggregate([{$match: {tipo: 'estudiante'}},{$lookup: {from: "cursos", localField: 'cursos', foreignField: '_id', as: 'curso'}},{$project: {_id: 1, nombre: 1, profesion: 1, telefono: 1, 'curso.title': 1}}] )
+db.createView("viewContenido","viewUsuarios",[{"$unwind" : "$cursos"},{$lookup: {from: "contenido", localField: "cursos.avatar", foreignField: "_id", as: "cursos.avatar"}},{"$project" : {"contenido" : { $concatArrays: [ "$cursos.contenido", "$cursos.avatar"]}}},{"$unwind" : "$contenido"}])
+{
+        "name" : "viewContenido",
+        "type" : "view",
+        "options" : {
+                "viewOn" : "viewUsuarios",
+                "pipeline" : [
+                        {
+                                "$unwind" : "$cursos"
+                        },
+                        {
+                                "$project" : {
+                                        "contenido" : "$cursos.contenido"
+                                }
+                        },
+                        {
+                                "$unwind" : "$contenido"
+                        }
+                ]
+        },
+        "info" : {
+                "readOnly" : true
+        }
+},
+
+{
+        "name" : "viewContenido",
+        "type" : "view",
+        "options" : {
+                "viewOn" : "viewUsuarios",
+                "pipeline" : [
+                        {
+                                "$unwind" : "$cursos"
+                        },
+                        {
+                                "$project" : {
+                                        "contenido" : {
+                                            $concatArrays:
+                                                [
+                                                    "$cursos.contenido",
+                                                    ["$cursos.avatar"]
+                                                ]
+                                        }
+                                }
+                        },
+                        {
+                                "$unwind" : "$contenido"
+                        }
+                ]
+        },
+        "info" : {
+                "readOnly" : true
+        }
+},
+
+"$lookup" : {
+        "from" : "contenido",
+        "localField" : "contenido",
+        "foreignField" : "_id",
+        "as" : "contenido"
+}
