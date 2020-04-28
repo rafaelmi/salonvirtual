@@ -27,7 +27,7 @@ function login(args, session) {
       // delete data._id;
       // delete data.password;
       data.username = args.username;
-      Object.assign(session, data);
+      Object.assign(session, data, {temp: {contenido: {}}});
       res = 200;
     }
     return response(res, data);

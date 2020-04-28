@@ -59,6 +59,14 @@ app.get('/contenido/:id', (req, res) => {
   contenido['get'](req, res);
 });
 
+app.get('/contenido/:id/key/:key', (req, res) => {
+  contenido['get'](req, res);
+});
+
+app.post('/contenido', (req, res) => {
+  handle(req, res, contenido)
+});
+
 io.on('connection', (socket) => {
   const session = socket.request.session
   socket.on('subscribe', (args) => {

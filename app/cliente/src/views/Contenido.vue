@@ -5,7 +5,7 @@
       <v-spacer/>
     </v-toolbar>-->
     <template v-if="info.ext == 'pdf'">
-      <pdf :src="'/api/contenido/' + $route.params.idContenido"
+      <pdf :src="src"
         :page="pdf.setPage"
         @num-pages="pdf.pageCount = $event"
         @page-loaded="pdf.currentPage = $event"
@@ -67,9 +67,12 @@
           {{info.title}}
         </v-card-title>
         <v-card-text class="text-center display-1 font-weight-light blue--text text--darken-4">
-          <video controls class="black" width="100%" oncontextmenu="return false;"> <!-- width="320" height="240" -->
-            <source :src="'/api/contenido/' + $route.params.idContenido" type="video/mp4"/>
-          </video>
+          <template v-if="swDownload">
+            <video controls class="black" width="100%" oncontextmenu="return false;" preload="auto"> <!-- width="320" height="240" -->
+              <source :src="src" type="video/mp4"/>
+              <!--<source :src="'/api/contenido/' + info._id + '/key/' + key" type="video/mp4"/>-->
+            </video>
+          </template>
         </v-card-text>
       </v-card>
       <!--<chat :messages="$store.state.chats[$route.params.idContenido]"/>-->
@@ -101,7 +104,8 @@ export default {
       pageCount: 0,
       setPage: 1,
       loading: true
-    }
+    },
+    key: null
   }),
 
   computed: {
@@ -118,6 +122,22 @@ export default {
     },
     pagination () {
       return 'Pág. ' + this.pdf.currentPage + ' de ' + this.pdf.pageCount
+    },
+    swDownload () {
+      return !!this.key || !this.info.keyRequired
+    },
+    src () {
+      const src = '/api/contenido/' + this.$route.params.idContenido
+      return src + (this.key ? '/key/' + this.key : '')
+    }
+  },
+
+  created () {
+    if (this.info.keyRequired) {
+      this.$store.dispatch('requestKey', this.info._id)
+        .then((key) => {
+          this.key = key
+        })
     }
   },
 

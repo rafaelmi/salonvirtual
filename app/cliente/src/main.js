@@ -30,26 +30,30 @@ Vue.use(new VueSocketIO({
 Vue.use(Chat)
 
 router.beforeEach((to, from, next) => {
-  store.dispatch('start').then(() => {
-    if (!to.meta || !to.meta.requiresAuth) next()
-    else {
-      if (store.state.logged) {
-        if (to.name === 'Login') next({ name: 'Home' })
-        else if (to.name === 'Logout') {
-          store.dispatch('logout')
-            .then(() => next({ name: 'Init' }))
-        } else next()
-      } else {
-        if (['Login', 'Init'].indexOf(to.name) >= 0) {
-          store.commit('setNextRoute', '/home')
-          next()
+  if (!store.state.started && to.params.idContenido) {
+    next({ path: '/curso/' + to.params.idCurso })
+  } else {
+    store.dispatch('start').then(() => {
+      if (!to.meta || !to.meta.requiresAuth) next()
+      else {
+        if (store.state.logged) {
+          if (to.name === 'Login') next({ name: 'Home' })
+          else if (to.name === 'Logout') {
+            store.dispatch('logout')
+              .then(() => next({ name: 'Init' }))
+          } else next()
         } else {
-          store.commit('setNextRoute', to.path)
-          next({ name: 'Login' })
+          if (['Login', 'Init'].indexOf(to.name) >= 0) {
+            store.commit('setNextRoute', '/home')
+            next()
+          } else {
+            store.commit('setNextRoute', to.path)
+            next({ name: 'Login' })
+          }
         }
       }
-    }
-  })
+    })
+  }
 })
 
 new Vue({
